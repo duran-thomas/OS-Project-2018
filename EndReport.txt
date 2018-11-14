@@ -1,0 +1,156 @@
+The Process Report
+
+Processes to be executed
+
+PID		Task		Priority
+
+PID: 5	 Task: Sort		 Priority: 3
+
+PID: 9	 Task: Total   	 Priority: 4
+
+PID: 8	 Task: Sort		 Priority: 1
+
+PID: 7	 Task: Total   	 Priority: 5
+
+PID: 4	 Task: Remove  	 Priority: 3
+
+PID: 1	 Task: Remove  	 Priority: 1
+
+PID: 3	 Task: Insert  	 Priority: 4
+
+PID: 0	 Task: Sort		 Priority: 4
+
+PID: 6	 Task: Remove  	 Priority: 3
+
+PID: 2	 Task: Insert  	 Priority: 5
+
+Processes in Queue
+
+PID 	Task 	Priority
+
+PID: 0			Task: Sort    			Priority: 2
+
+PID: 0			Task: Total   			Priority: 4
+
+PID: 0			Task: Sort    			Priority: 2
+
+PID: 0			Task: Insert  			Priority: 2
+
+PID: 0			Task: Remove  			Priority: 1
+
+After Processes Details
+
+PID 	Task 			Priority 		Create Time 					Start Time 					End Time			 Attempts	Sleep Time 
+
+PID:5	Task:Sort    	 Process:3	 Created:2018/11/06 13:55:02.940				Start:2018/11/06 13:55:02.976				 End:2018/11/06 13:55:38.833			 Attempts:1		 Sleep:1
+
+
+PID:9	Task:Total   	 Process:4	 Created:2018/11/06 13:55:02.941				Start:2018/11/06 13:55:38.833				 End:2018/11/06 13:55:38.839			 Attempts:1		 Sleep:2
+
+
+PID:8	Task:Sort    	 Process:1	 Created:2018/11/06 13:55:02.942				Start:2018/11/06 13:55:38.839				 End:2018/11/06 13:55:49.983			 Attempts:1		 Sleep:1
+
+
+PID:7	Task:Total   	 Process:5	 Created:2018/11/06 13:55:02.942				Start:2018/11/06 13:55:49.984				 End:2018/11/06 13:55:49.984			 Attempts:1		 Sleep:2
+
+
+PID:4	Task:Remove  	 Process:3	 Created:2018/11/06 13:55:02.942				Start:2018/11/06 13:55:49.984				 End:2018/11/06 13:55:49.985			 Attempts:1		 Sleep:4
+
+
+PID:1	Task:Remove  	 Process:1	 Created:2018/11/06 13:55:02.942				Start:2018/11/06 13:55:49.985				 End:2018/11/06 13:55:49.986			 Attempts:1		 Sleep:4
+
+
+PID:3	Task:Insert  	 Process:4	 Created:2018/11/06 13:55:02.942				Start:2018/11/06 13:55:49.987				 End:2018/11/06 13:55:55.850			 Attempts:1		 Sleep:2
+
+
+PID:0	Task:Sort    	 Process:4	 Created:2018/11/06 13:55:02.942				Start:2018/11/06 13:55:55.850				 End:2018/11/06 13:55:59.955			 Attempts:1		 Sleep:5
+
+
+PID:6	Task:Remove  	 Process:3	 Created:2018/11/06 13:55:02.942				Start:2018/11/06 13:55:59.955				 End:2018/11/06 13:55:59.956			 Attempts:1		 Sleep:3
+
+
+PID:2	Task:Insert  	 Process:5	 Created:2018/11/06 13:55:02.943				Start:2018/11/06 13:55:59.956				 End:2018/11/06 13:56:06.944			 Attempts:1		 Sleep:1
+
+
+PID:5	Task:Sort    	 Process:2	 Created:2018/11/06 13:55:02.973				Start:2018/11/06 13:56:06.944				 End:2018/11/06 13:56:15.041			 Attempts:1		 Sleep:4
+
+
+PID:9	Task:Total   	 Process:4	 Created:2018/11/06 13:55:02.975				Start:2018/11/06 13:56:15.041				 End:2018/11/06 13:56:15.042			 Attempts:1		 Sleep:5
+
+
+PID:8	Task:Sort    	 Process:2	 Created:2018/11/06 13:55:02.975				Start:2018/11/06 13:56:15.042				 End:2018/11/06 13:56:41.236			 Attempts:1		 Sleep:2
+
+
+PID:7	Task:Insert  	 Process:2	 Created:2018/11/06 13:55:02.975				Start:2018/11/06 13:56:41.236				 End:2018/11/06 13:56:46.666			 Attempts:1		 Sleep:3
+
+
+PID:4	Task:Remove  	 Process:1	 Created:2018/11/06 13:55:02.975				Start:2018/11/06 13:56:46.667				 End:2018/11/06 13:56:46.667			 Attempts:1		 Sleep:5
+
+The Process Report
+
+Processes to be executed
+
+PID		Task		Priority
+
+PID: 8	 Task: Total   	 Priority: 4
+
+PID: 3	 Task: Total   	 Priority: 2
+
+PID: 1	 Task: Remove  	 Priority: 1
+
+PID: 6	 Task: Insert  	 Priority: 5
+
+PID: 9	 Task: Insert  	 Priority: 3
+
+PID: 7	 Task: Remove  	 Priority: 5
+
+PID: 5	 Task: Total   	 Priority: 3
+
+PID: 0	 Task: Retrieve	 Priority: 4
+
+PID: 2	 Task: Total   	 Priority: 4
+
+PID: 4	 Task: Sort		 Priority: 2
+
+Processes in Queue
+
+PID 	Task 	Priority
+
+PID: 0			Task: Total   			Priority: 5
+
+After Processes Details
+
+PID 	Task 			Priority 		Create Time 					Start Time 					End Time			 Attempts	Sleep Time 
+
+PID:8	Task:Total   	 Process:4	 Created:2018/11/14 02:00:13.275				Start:2018/11/14 02:00:13.278				 End:2018/11/14 02:00:13.279			 Attempts:1		 Sleep:1
+
+
+PID:3	Task:Total   	 Process:2	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:00:13.279				 End:2018/11/14 02:00:13.279			 Attempts:1		 Sleep:2
+
+
+PID:1	Task:Remove  	 Process:1	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:00:13.279				 End:2018/11/14 02:00:13.279			 Attempts:1		 Sleep:1
+
+
+PID:6	Task:Insert  	 Process:5	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:00:13.279				 End:2018/11/14 02:02:21.339			 Attempts:1		 Sleep:3
+
+
+PID:9	Task:Insert  	 Process:3	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:02:21.339				 End:2018/11/14 02:02:29.008			 Attempts:1		 Sleep:5
+
+
+PID:7	Task:Remove  	 Process:5	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:02:29.008				 End:2018/11/14 02:02:29.009			 Attempts:1		 Sleep:5
+
+
+PID:5	Task:Total   	 Process:3	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:02:29.009				 End:2018/11/14 02:02:29.009			 Attempts:1		 Sleep:1
+
+
+PID:0	Task:Retrieve	 Process:4	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:02:29.009				 End:2018/11/14 02:02:29.009			 Attempts:1		 Sleep:3
+
+
+PID:2	Task:Total   	 Process:4	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:02:29.009				 End:2018/11/14 02:02:29.010			 Attempts:1		 Sleep:2
+
+
+PID:4	Task:Sort    	 Process:2	 Created:2018/11/14 02:00:13.277				Start:2018/11/14 02:02:29.010				 End:2018/11/14 02:02:38.739			 Attempts:1		 Sleep:2
+
+
+PID:8	Task:Total   	 Process:5	 Created:2018/11/14 02:00:13.278				Start:2018/11/14 02:02:38.739				 End:2018/11/14 02:02:38.740			 Attempts:1		 Sleep:5
+
