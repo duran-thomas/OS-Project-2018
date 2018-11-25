@@ -1,0 +1,109 @@
+OPERATING SYSTEM (CIT3002)
+Simulation Date       : 24/11/2018
+Simulation Start Time : 22:22pm
+
+		Integer Elements :
+				Key:10	Value:708
+				Key:9	Value:475
+				Key:8	Value:549
+				Key:7	Value:675
+				Key:6	Value:193
+				Key:5	Value:716
+				Key:4	Value:367
+				Key:3	Value:219
+				Key:2	Value:429
+				Key:1	Value:414
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PID		TASK		KEY      VALUE	     ATTEMPTS    START TIME	END TIME    SLEEP TIME	   Algorithm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+202	Added a New Record +	11        756		1	    1	       	3		 5	   FCFS
+119	Added a New Record +	12        185		1	    4	       	6		 0	   FCFS
+506	Added a New Record +	13        233		1	    8	       	8		 0	   FCFS
+539	Removed a Record   -	13        233		1	    10	       	13		 0	   FCFS
+21	Removed a Record   -	12        185		1	    14	       	16		 0	   FCFS
+369	Removed a Record   -	11        756		1	    17	       	19		 0	   FCFS
+24	Added a New Record +	11        381		1	    20	       	23		 3	   FCFS
+372	Added a New Record +	12        360		1	    24	       	27		 0	   FCFS
+502	Sorted The Records 				1	    27	       	28		 4	   FCFS
+				Key:6	Value:193
+				Key:3	Value:219
+				Key:12	Value:360
+				Key:4	Value:367
+				Key:11	Value:381
+				Key:1	Value:414
+				Key:2	Value:429
+				Key:9	Value:475
+				Key:8	Value:549
+				Key:7	Value:675
+				Key:10	Value:708
+				Key:5	Value:716
+291	Sorted The Records 				1	    29	       	31		 2	   FCFS
+				Key:6	Value:193
+				Key:3	Value:219
+				Key:12	Value:360
+				Key:4	Value:367
+				Key:11	Value:381
+				Key:1	Value:414
+				Key:2	Value:429
+				Key:9	Value:475
+				Key:8	Value:549
+				Key:7	Value:675
+				Key:10	Value:708
+				Key:5	Value:716
+336	Removed a Record   -	6        193		1	    32	       	34		 2	   FCFS
+33	Retrieved a Record	4        367		2	    25	       	35		 0	   FCFS
+311	Removed a Record   -	3        219		2	    29	       	38		 0	   FCFS
+298	Retrieved a Record	8        549		2	    29	       	39		 1	   FCFS
+9	Added a New Record +	13        390		2	    30	       	41		 0	   FCFS
+517	Added a New Record +	14        131		2	    31	       	45		 4	   FCFS
+10	Calculated the Total	Sum:     5595		2	    30	       	46		 0	   RR
+85	Retrieved a Record	2        429		3	    10	       	47		 0	   RR
+127	Sorted The Records 				2	    31	       	48		 2	   FCFS
+				Key:14	Value:131
+				Key:12	Value:360
+				Key:4	Value:367
+				Key:11	Value:381
+				Key:13	Value:390
+				Key:1	Value:414
+				Key:2	Value:429
+				Key:9	Value:475
+				Key:8	Value:549
+				Key:7	Value:675
+				Key:10	Value:708
+				Key:5	Value:716
+287	Retrieved a Record	10        708		3	    24	       	50		 1	   RR
+247	Sorted The Records 				3	    11	       	50		 0	   FCFS
+				Key:14	Value:131
+				Key:12	Value:360
+				Key:4	Value:367
+				Key:11	Value:381
+				Key:13	Value:390
+				Key:1	Value:414
+				Key:2	Value:429
+				Key:9	Value:475
+				Key:8	Value:549
+				Key:7	Value:675
+				Key:10	Value:708
+				Key:5	Value:716
+585	Retrieved a Record	2        429		3	    26	       	51		 3	   FCFS
+565	Retrieved a Record	4        367		4	    11	       	52		 3	   RR
+375	Calculated the Total	Sum:     5595		4	    26	       	53		 2	   RR
+501	Added a New Record +	15        123		3	    27	       	53		 1	   FCFS
+120	Sorted The Records 				4	    26	       	54		 3	   FCFS
+				Key:15	Value:123
+				Key:14	Value:131
+				Key:12	Value:360
+				Key:4	Value:367
+				Key:11	Value:381
+				Key:13	Value:390
+				Key:1	Value:414
+				Key:2	Value:429
+				Key:9	Value:475
+				Key:8	Value:549
+				Key:7	Value:675
+				Key:10	Value:708
+				Key:5	Value:716
+594	Calculated the Total	Sum:     5718		4	    27	       	54		 4	   RR
+326	Retrieved a Record	11        381		4	    32	       	55		 1	   RR
+408	Removed a Record   -	15        123		5	    25	       	55		 0	   RR
+90	Calculated the Total	Sum:     5595		5	    25	       	55		 3	   FCFS

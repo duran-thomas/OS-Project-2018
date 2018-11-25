@@ -1,0 +1,46 @@
+OPERATING SYSTEM (CIT3002)
+Simulation Date       : 23/11/2018
+Simulation Start Time : 18:38pm
+
+		Integer Elements :
+				Key:10	Value:193
+				Key:9	Value:621
+				Key:8	Value:784
+				Key:7	Value:361
+				Key:6	Value:403
+				Key:5	Value:140
+				Key:4	Value:262
+				Key:3	Value:248
+				Key:2	Value:107
+				Key:1	Value:255
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PID		TASK		KEY      VALUE	     ATTEMPTS    START TIME	END TIME    SLEEP TIME	   Algorithm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+175	Calculated the Total	Sum:     3374		1	    0	       	4		 1	   FCFS
+18	Removed a Record   -	10        193		1	    5	       	6		 2	   FCFS
+208	Removed a Record   -	9        621		1	    7	       	10		 1	   FCFS
+415	Added a New Record +	9        856		1	    11	       	14		 0	   FCFS
+89	Sorted The Records 				1	    15	       	19		 1	   FCFS
+				Key:2	Value:107
+				Key:5	Value:140
+				Key:3	Value:248
+				Key:1	Value:255
+				Key:4	Value:262
+				Key:7	Value:361
+				Key:6	Value:403
+				Key:8	Value:784
+				Key:9	Value:856
+379	Sorted The Records 				1	    20	       	21		 0	   FCFS
+				Key:2	Value:107
+				Key:5	Value:140
+				Key:3	Value:248
+				Key:1	Value:255
+				Key:4	Value:262
+				Key:7	Value:361
+				Key:6	Value:403
+				Key:8	Value:784
+				Key:9	Value:856
+490	Added a New Record +	3        763		2	    1	       	22		 2	   FCFS
+146	Added a New Record +	4        815		3	    2	       	24		 1	   RR
+457	Calculated the Total	Sum:     4994		4	    2	       	25		 1	   RR
+544	Calculated the Total	Sum:     4994		3	    1	       	25		 1	   FCFS

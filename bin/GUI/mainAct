@@ -1,0 +1,1713 @@
+package GUI; 
+
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JPanel; 
+import javax.swing.JButton;
+import java.awt.event.ActionListener; 
+import java.awt.event.ActionEvent; 
+import javax.swing.JProgressBar;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font; 
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
+import Algorithm.Algorithm;
+import DoublyLinkedList.DoublyLinkList;
+import Queue.Queue;  
+import Queue.Node;
+import Queue.Process; 
+import Source.Validate;
+
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator; 
+import java.awt.Window.Type; 
+import java.awt.Choice; 
+import java.awt.event.ItemListener;
+import java.io.IOException;
+import java.util.Random;
+import java.awt.event.ItemEvent;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder; 
+
+public class MainActivity {
+
+	private JFrame frame;
+	private JLabel untilization_lbl;
+	private JPanel cpu_panel;
+	private JPanel process_panel;
+	private DefaultTableModel processdtm; 
+	private JTable table;
+	private JLabel processes_lbl;
+	private JLabel cpu_label;
+	private JProgressBar progressBar;
+	private JLabel memoryAmount;
+	private JProgressBar memoryBar;
+	private JLabel uptime_lbl;
+	int hour=0;
+	int minute=0;
+	int second=0;
+	String time;
+	private Thread RR;
+	private Thread FCFS;
+	private Thread setReadyQueue; 
+	private JTextField ready3;
+	private JTextField ready2;
+	private JTextField ready1;
+	private JTextField ready4;
+	private JTextField ready5;
+	private Choice processes;
+	private Choice speed; 
+	private int simulatorSpeed=1000;
+	private JButton btnStart;
+	private JButton btnReset;
+	private JButton btnStop;
+	private JButton btnSave;
+	private JButton btnContinue;
+	private JLabel currentProcess1;
+	private JButton btnNewButton;
+	private JLabel currentProcess2;
+	private JLabel currentProcess3;
+	private JLabel currentProcess4;
+	private JLabel currentProcess5;
+	private Choice quantum;
+	private DoublyLinkList list;
+//	Queue runningQ = null;
+	Queue workingQueue=null;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainActivity window = new MainActivity();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public MainActivity() {
+		initialize();  
+		runCpuThread();
+	}
+
+
+	//private void setValues() {}
+
+	
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame(); 
+		frame.setResizable(false);
+		frame.setType(Type.POPUP);
+		//frame.setUndecorated(true);
+		frame.setBounds(100, 100, 1016, 870);
+		frame.setLocationRelativeTo(null); 
+		frame.setTitle("Simulator");
+		//frame.setBackground(new Color(255, 255, 255, 83));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		process_panel = new JPanel();
+		process_panel.setBounds(12, 0, 972, 822);
+		frame.getContentPane().add(process_panel);
+		process_panel.setBackground(Color.WHITE);
+		process_panel.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBorder(null);
+		scrollPane.setBounds(12, 202, 948, 284);
+		process_panel.add(scrollPane);
+		
+		
+		Object[] title = {"PID", "Task", "Base Address","Start Time", "End Time", "Attemps", "Sleep Time","Service Time", "Algorithm"};
+		processdtm = new DefaultTableModel(); 
+		processdtm.setColumnIdentifiers(title); 	
+		table = new JTable(processdtm);
+		table.setShowGrid(true);
+		table.setShowVerticalLines(true);
+		table.setShowGrid(true);
+		table.setGridColor(new Color(0, 191, 255));
+		table.setShowVerticalLines(true); 
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+		table.getColumnModel().getColumn(1).setPreferredWidth(200);
+		table.getColumnModel().getColumn(7).setPreferredWidth(120);
+		
+		
+		
+		scrollPane.setViewportView(table);
+		
+		cpu_panel = new JPanel();
+		cpu_panel.setBounds(12, 491, 948, 293);
+		process_panel.add(cpu_panel);
+		cpu_panel.setBorder(new LineBorder(Color.WHITE));
+		cpu_panel.setLayout(null);
+		
+		JLabel lblCpu_1 = new JLabel("CPU");
+		lblCpu_1.setFont(new Font("Sitka Subheading", Font.PLAIN, 50));
+		lblCpu_1.setBounds(397, 3, 193, 70);
+		cpu_panel.add(lblCpu_1);
+		
+		JLabel cpu_lbl = new JLabel("Intel\u00AE Dual-Core\u2122 i5-8269U Processor");
+		cpu_lbl.setBounds(655, 57, 271, 16);
+		cpu_panel.add(cpu_lbl);
+		
+		JLabel lblSpeed = new JLabel("Speed");
+		lblSpeed.setBounds(444, 247, 87, 16);
+		cpu_panel.add(lblSpeed);
+		
+		JLabel label = new JLabel("Untilization");
+		label.setBounds(527, 186, 87, 16);
+		cpu_panel.add(label);
+		
+		JLabel lblUptime = new JLabel("Uptime");
+		lblUptime.setBounds(527, 247, 87, 16);
+		cpu_panel.add(lblUptime);
+		
+		JLabel lblCores = new JLabel("Cores:");
+		lblCores.setBounds(754, 186, 158, 16);
+		cpu_panel.add(lblCores);
+		
+		JLabel lblLogicalProcessors = new JLabel("Logical Processors:");
+		lblLogicalProcessors.setBounds(754, 266, 158, 16);
+		cpu_panel.add(lblLogicalProcessors);
+		
+		JLabel lblProcessors = new JLabel("Processes");
+		lblProcessors.setBounds(444, 186, 87, 16);
+		cpu_panel.add(lblProcessors);
+		
+		JLabel lblSockets = new JLabel("Socket(s):");
+		lblSockets.setBounds(754, 226, 158, 16);
+		cpu_panel.add(lblSockets);
+		
+		JLabel lblCpus = new JLabel("CPU(s):");
+		lblCpus.setBounds(753, 166, 159, 16);
+		cpu_panel.add(lblCpus);
+		
+		JLabel lblThreadsPerCore = new JLabel("Thread(s) per core:");
+		lblThreadsPerCore.setBounds(753, 206, 159, 16);
+		cpu_panel.add(lblThreadsPerCore);
+		
+		JLabel lblCoresPerSocket = new JLabel("CPU(s) per socket:");
+		lblCoresPerSocket.setBounds(754, 246, 158, 16);
+		cpu_panel.add(lblCoresPerSocket);
+		
+		untilization_lbl = new JLabel("util");
+		untilization_lbl.setBounds(527, 200, 87, 16);
+		cpu_panel.add(untilization_lbl);
+		
+		processes_lbl = new JLabel("0");
+		processes_lbl.setBounds(444, 205, 65, 16);
+		cpu_panel.add(processes_lbl);
+		
+		JLabel speed_lbl = new JLabel("spe");
+		speed_lbl.setBounds(444, 266, 87, 16);
+		cpu_panel.add(speed_lbl);
+		
+		uptime_lbl = new JLabel("");
+		uptime_lbl.setBounds(527, 265, 87, 16);
+		cpu_panel.add(uptime_lbl);
+		
+		JLabel label_2 = new JLabel("2");
+		label_2.setBounds(887, 166, 56, 16);
+		cpu_panel.add(label_2);
+		
+		JLabel label_3 = new JLabel("4");
+		label_3.setBounds(887, 186, 56, 16);
+		cpu_panel.add(label_3);
+		
+		JLabel label_4 = new JLabel("2");
+		label_4.setBounds(887, 246, 56, 16);
+		cpu_panel.add(label_4);
+		
+		JLabel label_5 = new JLabel("8");
+		label_5.setBounds(887, 266, 56, 16);
+		cpu_panel.add(label_5);
+		
+		JLabel label_6 = new JLabel("1");
+		label_6.setBounds(887, 206, 56, 16);
+		cpu_panel.add(label_6);
+		
+		JLabel label_7 = new JLabel("1");
+		label_7.setBounds(887, 226, 56, 16);
+		cpu_panel.add(label_7);
+		progressBar = new JProgressBar();
+		progressBar.setFocusable(false);
+		progressBar.setBounds(507, 90, 129, 48);
+		cpu_panel.add(progressBar);
+		progressBar.setBackground(Color.WHITE);
+		
+		JLabel lblCpu = new JLabel("CPU");
+		lblCpu.setBounds(444, 96, 56, 16);
+		cpu_panel.add(lblCpu);
+		
+		
+		cpu_label = new JLabel("");
+		cpu_label.setBounds(454, 143, 122, 16);
+		cpu_panel.add(cpu_label);
+		
+		JLabel lblUsage = new JLabel("Usage");
+		lblUsage.setBounds(444, 109, 56, 16);
+		cpu_panel.add(lblUsage);
+		
+		JLabel lblMemory_1 = new JLabel("Memory");
+		lblMemory_1.setBounds(12, 3, 193, 70);
+		cpu_panel.add(lblMemory_1);
+		lblMemory_1.setFont(new Font("Sitka Subheading", Font.PLAIN, 50));
+		
+		JLabel lblNewLabel = new JLabel("200MB");
+		lblNewLabel.setBounds(293, 57, 92, 16);
+		cpu_panel.add(lblNewLabel);
+		
+		JLabel lblInUse = new JLabel("In use");
+		lblInUse.setBounds(64, 183, 92, 16);
+		cpu_panel.add(lblInUse);
+		
+		JLabel lblAvailable = new JLabel("Available");
+		lblAvailable.setBounds(64, 209, 92, 16);
+		cpu_panel.add(lblAvailable);
+		
+		JLabel lblSpeed_1 = new JLabel("Speed:");
+		lblSpeed_1.setBounds(213, 186, 92, 16);
+		cpu_panel.add(lblSpeed_1);
+		
+		JLabel lblSlotsUsed = new JLabel("Slots used:");
+		lblSlotsUsed.setBounds(213, 212, 92, 16);
+		cpu_panel.add(lblSlotsUsed);
+		
+		JLabel lblCommited = new JLabel("Commited ");
+		lblCommited.setBounds(213, 242, 92, 16);
+		cpu_panel.add(lblCommited);
+		
+		JLabel lblCached = new JLabel("Cached");
+		lblCached.setBounds(64, 239, 92, 16);
+		cpu_panel.add(lblCached);
+		
+		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+		separator.setBounds(371, 3, 2, 293);
+		cpu_panel.add(separator);
+		
+		JLabel lblMemory = new JLabel("Memory");
+		lblMemory.setFocusable(false);
+		lblMemory.setBounds(64, 109, 122, 16);
+		cpu_panel.add(lblMemory);
+		
+		JLabel label_1 = new JLabel("Usage");
+		label_1.setBounds(64, 122, 122, 16);
+		cpu_panel.add(label_1);
+		
+		memoryAmount = new JLabel("");
+		memoryAmount.setBounds(88, 143, 122, 16);
+		cpu_panel.add(memoryAmount);
+		
+		memoryBar = new JProgressBar();
+		memoryBar.setFocusable(false);
+		memoryBar.setBounds(114, 90, 129, 48);
+		cpu_panel.add(memoryBar);
+		memoryBar.setBackground(Color.WHITE);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(12, 13, 948, 185);
+		process_panel.add(panel);
+		panel.setLayout(null);
+		
+	 
+		
+		
+		processes = new Choice();
+		processes.setBounds(103, 42, 60, 22);
+		processes.setFocusable(false);
+		processes.add("");
+		for(int i=10; i<=30; i++) 
+			processes.add(String.valueOf(i));
+		panel.add(processes);
+		
+		JLabel lblProcesses = new JLabel("Processes");
+		lblProcesses.setBounds(34, 48, 66, 16);
+		panel.add(lblProcesses);
+		
+		JLabel lblAlgorithm = new JLabel(""
+				+ "");
+		lblAlgorithm.setBounds(34, 14, 66, 16);
+		panel.add(lblAlgorithm);
+		
+		btnStart = new JButton("Start");
+		btnStart.setFocusable(false);
+		btnStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+//				btnReset.setEnabled(true);
+				if(new Validate().Validation(processes.getSelectedItem(), quantum.getSelectedItem())) {
+					btnStart.setEnabled(false);
+					btnStop.setEnabled(true); 
+				//	new DoublyLinkList().addText("Operating Sysytems CMP3001");
+				//	new DoublyLinkList().addText(processes.getSelectedItem());
+					
+					
+					//Default
+					list = new DoublyLinkList();
+					list.CreateFile();				
+						
+					//Default
+					StartSimulation();
+					
+				}
+
+			}
+		});
+		btnStart.setBounds(34, 113, 91, 25);
+		panel.add(btnStart);
+		
+		btnContinue = new JButton("Continue");
+		btnContinue.setFocusable(false);
+		btnContinue.setEnabled(false);
+		btnContinue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnReset.setEnabled(false);
+				setReadyQueue.resume();
+				FCFS.resume();
+				RR.resume();
+				cpuCore1.resume();
+				cpuCore2.resume();
+				cpuCore3.resume();
+				cpuCore4.resume();
+				cpuCore5.resume();
+			//	ProcessThread.resume();
+			}
+		});
+		btnContinue.setBounds(137, 113, 91, 25);
+		panel.add(btnContinue);
+		
+		btnStop = new JButton("Stop");
+		btnStop.setFocusable(false);
+		btnStop.setEnabled(false);
+		btnStop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(RR.isAlive())   RR.suspend();
+				if(FCFS.isAlive())	FCFS.suspend();
+				if(setReadyQueue.isAlive())	setReadyQueue.suspend();
+				
+				if(!currentProcess1.getText().isEmpty())	cpuCore1.suspend();
+				if(!currentProcess2.getText().isEmpty())	cpuCore2.suspend();
+				if(!currentProcess3.getText().isEmpty())	cpuCore3.suspend();
+				if(!currentProcess4.getText().isEmpty())	cpuCore4.suspend();
+				if(!currentProcess5.getText().isEmpty())	cpuCore5.suspend();
+				//	ProcessThread.suspend();
+
+				btnContinue.setEnabled(true);
+				btnReset.setEnabled(true);
+				if (table.getRowCount()==0) {
+					btnStop.setEnabled(false);
+					btnReset.setEnabled(false);
+	
+				}
+			}
+		});
+		btnStop.setBounds(34, 146, 91, 25);
+		panel.add(btnStop);
+		
+		btnSave = new JButton("Save");
+		btnSave.setFocusable(false);
+		btnSave.setBounds(240, 146, 97, 25);
+		panel.add(btnSave);
+		
+		btnReset = new JButton("Reset");
+		btnReset.setFocusable(false);
+		btnReset.setEnabled(false);
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				cpuCore1.suspend();
+				
+				
+				RR.suspend();
+
+				setReadyQueue.stop();
+				btnContinue.setEnabled(false);
+			//	ProcessThread.stop();
+				int rows = table.getRowCount();
+				for(int i=0;i<rows;i++)
+					processdtm.removeRow(table.getRowCount()-1); 
+				ready1.setText("");
+				ready2.setText("");
+				ready3.setText("");
+				ready4.setText("");
+				ready5.setText("");
+				currentProcess1.setText("");
+				currentProcess2.setText("");
+				currentProcess3.setText("");
+				currentProcess4.setText("");
+				currentProcess5.setText("");
+			//	ProcessThread.stop();
+				btnStart.setEnabled(true);
+				if (table.getRowCount()==0) {
+					btnStop.setEnabled(false);
+					btnReset.setEnabled(false);
+				}
+			}
+		});
+		btnReset.setBounds(137, 146, 91, 25);
+		panel.add(btnReset);
+		
+		JLabel lblSpeed_2 = new JLabel("Speed");
+		lblSpeed_2.setBounds(34, 83, 66, 16);
+		panel.add(lblSpeed_2);
+		
+		speed = new Choice();
+		speed.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				String simSpeed= speed.getSelectedItem();
+				if(simSpeed.equals("1")) {
+					simulatorSpeed=500;
+				}else if(simSpeed.equals("2")) {
+					simulatorSpeed=1000;
+				}else if(simSpeed.equals("3")) {
+					simulatorSpeed=1500;
+				}else if(simSpeed.equals("4")) {
+					simulatorSpeed=2000;
+				}else if(simSpeed.equals("5")) {
+					simulatorSpeed=3000;
+				}
+					
+				
+			}
+		});
+		speed.setBounds(103, 83, 60, 22);
+		speed.setFocusable(false); 
+		for (int i=1; i<=5; i++) 
+			speed.add(String.valueOf(i));
+		panel.add(speed);
+		
+		JLabel lblNewLabel_1 = new JLabel("Ready Queue (PID)");
+		lblNewLabel_1.setBounds(408, 13, 127, 16);
+		panel.add(lblNewLabel_1);
+		
+		ready5 = new JTextField();
+		ready5.setEditable(false);
+		ready5.setFocusable(false);
+		ready5.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ready5.setForeground(Color.BLACK);
+		ready5.setHorizontalAlignment(SwingConstants.CENTER);
+		ready5.setColumns(10);
+		ready5.setBounds(408, 41, 116, 22);
+		panel.add(ready5);
+		
+		ready4 = new JTextField();
+		ready4.setEditable(false);
+		ready4.setFocusable(false);
+		ready4.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ready4.setForeground(Color.BLACK);
+		ready4.setHorizontalAlignment(SwingConstants.CENTER);
+		ready4.setColumns(10);
+		ready4.setBounds(408, 68, 116, 22);
+		panel.add(ready4);
+		
+		ready3 = new JTextField();
+		ready3.setEditable(false);
+		ready3.setFocusable(false);
+		ready3.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ready3.setForeground(Color.BLACK);
+		ready3.setHorizontalAlignment(SwingConstants.CENTER);
+		ready3.setBounds(408, 95, 116, 22);
+		panel.add(ready3);
+		ready3.setColumns(10);
+		
+		ready2 = new JTextField();
+		ready2.setEditable(false);
+		ready2.setFocusable(false);
+		ready2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ready2.setForeground(Color.BLACK);
+		ready2.setHorizontalAlignment(SwingConstants.CENTER);
+		ready2.setColumns(10);
+		ready2.setBounds(408, 122, 116, 22);
+		panel.add(ready2);
+		
+		ready1 = new JTextField();
+		ready1.setEditable(false);
+		ready1.setFocusable(false);
+		ready1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ready1.setForeground(Color.BLACK);
+		ready1.setHorizontalAlignment(SwingConstants.CENTER);
+		ready1.setColumns(10);
+		ready1.setBounds(408, 149, 116, 22);
+		panel.add(ready1);
+		
+		JLabel lblAverageWaitingTime = new JLabel("Average Waiting Time");
+		lblAverageWaitingTime.setBounds(575, 99, 140, 16);
+		panel.add(lblAverageWaitingTime);
+		
+		JLabel lblTask = new JLabel("Processes Running: ");
+		lblTask.setBounds(674, 14, 125, 16);
+		panel.add(lblTask);
+		
+		JLabel lblAverageTurnarroundTime = new JLabel("Average Turnaround Time");
+		lblAverageTurnarroundTime.setBounds(735, 98, 157, 16);
+		panel.add(lblAverageTurnarroundTime);
+		
+		btnNewButton = new JButton("Results");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Thread.sleep(400);
+					if(new DoublyLinkList().fileExists())
+						Desktop.getDesktop().open(new java.io.File("Scheduling_Reports/report.txt"));
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setFocusable(false);
+		btnNewButton.setBounds(240, 113, 97, 25);
+		panel.add(btnNewButton);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_1.setBounds(557, 42, 358, 45);
+		panel.add(panel_1);
+		panel_1.setLayout(null);
+		
+		currentProcess1 = new JLabel("");
+		currentProcess1.setBounds(13, 13, 56, 16);
+		panel_1.add(currentProcess1);
+		
+		currentProcess2 = new JLabel("");
+		currentProcess2.setBounds(82, 13, 56, 16);
+		panel_1.add(currentProcess2);
+		
+		currentProcess3 = new JLabel("");
+		currentProcess3.setBounds(151, 13, 56, 16);
+		panel_1.add(currentProcess3);
+		
+		currentProcess4 = new JLabel("");
+		currentProcess4.setBounds(220, 13, 56, 16);
+		panel_1.add(currentProcess4);
+		
+		currentProcess5 = new JLabel("");
+		currentProcess5.setBounds(289, 13, 56, 16);
+		panel_1.add(currentProcess5);
+		
+		quantum = new Choice();
+		quantum.setBounds(254, 42, 56, 22);
+		quantum.setFocusable(false);
+		quantum.add("");
+		for(int i=1; i<=3; i++)
+			quantum.add(String.valueOf(i));
+		panel.add(quantum);
+		
+		JLabel lblQuantum = new JLabel("Quantum");
+		lblQuantum.setBounds(183, 42, 56, 22);
+		panel.add(lblQuantum);
+		
+		
+	} 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	protected void StartSimulation() {
+
+		int processAmount=Integer.valueOf(processes.getSelectedItem());
+		int unsetId=0;
+		boolean uniqueNotSet=true;
+		Queue batchQueue=new Queue();
+		int[] IDs = new int[processAmount];
+		
+		for(int i=0; i<processAmount; i++) {
+
+			IDs[i]=new Random().nextInt(600);
+		}
+		
+		for (int i = 0; i < IDs.length; i++) { 
+			for (int j = i + 1 ; j < IDs.length; j++) { 
+				if (IDs[i]== (IDs[j])) { 
+					IDs[i]=(int)(Math.random() * ((998 - 601) + 1)) + 501;
+				}
+			}
+		}
+
+			 
+		for(int i=1; i<=processAmount; i++) {
+			Process p =new Process();
+			p.setProcessID(IDs[i-1]);
+			p.setBaseAddress(i);
+
+			batchQueue.Enqueue(p);;
+			}
+
+			
+		runProcessThread(batchQueue);
+		
+		addAllProcessesToTable(batchQueue);
+		processes_lbl.setText(String.valueOf(table.getRowCount()));
+	 
+
+	}
+
+
+	
+
+public void runCpuThread() {
+
+
+	Thread autorun1=new Thread() {
+
+		public void run() {
+
+			while(true) {
+
+				try { 
+					int cpuValue = (int)(Math.random() * ((100 - 0) + 1)) + 0;
+					int memoryValue = 0;
+					progressBar.setValue(cpuValue);  
+					cpu_label.setText( String.valueOf(cpuValue));
+					cpu_label.setText(String.valueOf(cpuValue)+"%");
+
+					if(Integer.valueOf(processes_lbl.getText())>4)
+						memoryValue=5*40;
+					else
+						memoryValue =Integer.valueOf(processes_lbl.getText())*40;
+
+					int percent= memoryValue*100/200;
+
+					memoryAmount.setText(memoryValue+"/200 MB ("+percent+"%)");
+					memoryBar.setValue(percent);
+
+
+					// System.out.println(proAmount);
+					Thread.sleep(1500);
+
+
+
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+			}
+		}
+	};
+
+	autorun1.start();
+
+	Thread autorun2=new Thread() {
+
+		public void run() {
+
+			try {
+				while(true) {
+					//	Date today = new Date(); today.getHours()+":"  +today.getMinutes()+":" +today.getSeconds()
+
+					second++;
+					if(second==60) {
+						minute++;
+						second=0;
+
+					}
+					if(minute==60 || second ==60) {
+						hour++;
+						minute=0;
+
+					}
+
+					if(hour<10)
+						time=("0"+String.valueOf(hour));
+
+					else 
+						time=(":"+String.valueOf(hour));	
+
+					if(minute<10)
+						time+=(":0"+String.valueOf(minute) );
+
+					else 
+						time+=(":"+String.valueOf(minute));	
+
+					if(second<10)
+						time+=(":0"+String.valueOf(second));
+
+					else 
+						time+=(":"+String.valueOf(second));	
+
+					uptime_lbl.setText(time);
+
+					Thread.sleep(1000);
+				}
+
+
+			} catch (InterruptedException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+
+	};
+
+	autorun2.start();
+} 
+
+	
+public  void addAllProcessesToTable(Queue batchQueue) {
+	 String[] record = {""};
+	Node temp = batchQueue.getFront(); 
+	
+	
+   	  processdtm.getDataVector().removeAllElements(); //Delete All Processses
+
+	while(temp.getNextNode()!=null ){
+		record= new String[] { String.valueOf(temp.getData().getProcessID() ),
+				   String.valueOf(temp.getData().getTask()),
+				   String.valueOf(temp.getData().getBaseAddress()),
+				   String.valueOf(temp.getData().getStartTime()),
+				   String.valueOf(temp.getData().getEndTime()),
+				   String.valueOf(temp.getData().getAttempts()),
+				   String.valueOf(temp.getData().getSleepTime()),
+				   String.valueOf(temp.getData().getServiceTime())};
+		processdtm.addRow(record);
+		temp= temp.getNextNode();
+			
+	}	
+	
+	record= new String[] { String.valueOf(temp.getData().getProcessID() ),
+			   String.valueOf(temp.getData().getTask()),
+			   String.valueOf(temp.getData().getBaseAddress()),
+			   String.valueOf(temp.getData().getStartTime()),
+			   String.valueOf(temp.getData().getEndTime()),
+			   String.valueOf(temp.getData().getAttempts()),
+			   String.valueOf(temp.getData().getSleepTime()),
+			   String.valueOf(temp.getData().getServiceTime())};
+	processdtm.addRow(record);
+
+}
+
+public void runProcessThread(Queue batchQueue){
+
+	workingQueue = new Queue(batchQueue);
+	
+	
+	RR = new Thread() {
+
+		//int clockSpeed=Integer.valueOf(speed.getSelectedItem());
+		public void run() {
+			
+			while(true) {
+						
+
+				//					 System.out.println(sleepTime);
+
+				if( !workingQueue.isEmpty() ) {
+					int sleepTime=workingQueue.getFront().getData().getSleepTime();
+					int baseAddress=workingQueue.getFront().getData().getBaseAddress();
+				 
+					processdtm.setValueAt("Ready", baseAddress, 4);
+					processdtm.setValueAt("Ready", baseAddress+1, 4);
+					processdtm.setValueAt("Ready", baseAddress+2, 4);
+					processdtm.setValueAt("Ready", baseAddress+3, 4);
+					processdtm.setValueAt("Ready", baseAddress+4, 4);
+
+//					Node RRQ=workingQueue.Dequeue();
+					
+					if(sleepTime>0 && !currentProcess1.getText().isEmpty() || !currentProcess3.getText().isEmpty()|| !currentProcess5.getText().isEmpty()) {
+						
+						 sleepTime-=1;
+						 if(sleepTime<0) {
+							 workingQueue.getFront().getData().setSleepTime(0); 
+						 }else {
+							 processdtm.setValueAt("Sleeping", baseAddress-1, 3);
+							 workingQueue.getFront().getData().setSleepTime(sleepTime);
+							 processdtm.setValueAt(sleepTime, baseAddress-1, 6);
+							 
+							 
+						 }
+
+
+					}else { 
+						if(workingQueue.getFront().getData().getPriority()==0) { 
+
+							if(currentProcess1.getText().isEmpty()  && !workingQueue.isEmpty()) { 
+								Core1(workingQueue.Dequeue()); 
+								batchQueue.Dequeue();
+							} 
+
+							if(currentProcess3.getText().isEmpty()  && !workingQueue.isEmpty()) { 
+								Core3(workingQueue.Dequeue()); 
+								batchQueue.Dequeue();
+							}
+
+							if(currentProcess5.getText().isEmpty()  && !workingQueue.isEmpty()) { 
+								Core5(workingQueue.Dequeue()); 
+								batchQueue.Dequeue();
+							}
+						}
+					}
+				}
+
+				try { 
+					Thread.sleep(simulatorSpeed);
+				}catch (InterruptedException e) { 
+					e.printStackTrace();
+				}
+				
+
+
+			}
+
+		}
+
+
+	};
+
+
+	RR.start();
+	
+	FCFS = new Thread() {
+	
+		//int clockSpeed=Integer.valueOf(speed.getSelectedItem());
+		public void run() {
+			
+			while(true) {
+				
+			
+				if(!workingQueue.isEmpty()) {
+					int sleepTime=workingQueue.getFront().getData().getSleepTime();
+					int baseAddress=workingQueue.getFront().getData().getBaseAddress();
+
+					
+//					System.out.println(workingQueue.Dequeue().getData().getProcessID());
+//					System.out.println(workingQueue.Dequeue().getData().getProcessID());
+//					System.out.println(workingQueue.getFront().getData().getProcessID());
+					
+					
+					
+					 if(sleepTime>0 && !currentProcess2.getText().isEmpty() || !currentProcess4.getText().isEmpty() ) {
+						
+						 sleepTime-=1;
+						 if(sleepTime<0) {
+							 workingQueue.getFront().getData().setSleepTime(0); 
+						 }else  {
+							 processdtm.setValueAt("Sleeping", baseAddress-1, 3);
+							 workingQueue.getFront().getData().setSleepTime(sleepTime);
+							 processdtm.setValueAt(sleepTime, baseAddress-1, 6);
+							 
+							 
+						 }
+							
+							 
+						 
+//						 System.out.println(sleepTime);
+					 }else {
+						 
+							if(workingQueue.getFront().getData().getPriority()==1) {
+								if(currentProcess2.getText().isEmpty()  && !workingQueue.isEmpty()) { 
+									Core2(workingQueue.Dequeue()); 
+									batchQueue.Dequeue();
+ 
+//									System.out.println(workingQueue.getFront().getData().getProcessID());
+								} 
+							}else {
+								
+								
+								if(currentProcess2.getText().isEmpty()  && !workingQueue.isEmpty()) { 
+									Core2(workingQueue.Dequeue());
+									batchQueue.Dequeue();
+								}
+								
+								if(currentProcess4.getText().isEmpty() && !workingQueue.isEmpty()) { 
+									Core4(workingQueue.Dequeue()); 
+									batchQueue.Dequeue();
+									
+								}
+								
+							}
+					 }
+					
+					
+				
+					
+				}
+//				 processdtm.setValueAt("Ready", baseAddress, 3);
+//				 processdtm.setValueAt("Ready", baseAddress+1, 3);
+//				 processdtm.setValueAt("Ready", baseAddress+2, 3);
+//				 processdtm.setValueAt("Ready", baseAddress+3, 3);
+//				
+// 
+
+				try { 
+					Thread.sleep(simulatorSpeed);
+				}catch (InterruptedException e) { 
+					e.printStackTrace();
+				}
+				
+				if(workingQueue.isEmpty() 
+						&& currentProcess1.getText().isEmpty()
+						&& currentProcess2.getText().isEmpty()
+						&& currentProcess3.getText().isEmpty()
+						&& currentProcess4.getText().isEmpty()
+						&& currentProcess5.getText().isEmpty()
+						) { 
+					btnReset.setEnabled(true);
+					btnStop.setEnabled(false);
+					JOptionPane.showMessageDialog(null, "Simulation is Complete");
+					RR.suspend();
+					FCFS.suspend();
+					
+				}
+
+
+			}
+
+		}
+
+
+	};
+
+
+	FCFS.start();
+
+
+	setReadyQueue = new Thread() {
+
+
+		//int clockSpeed=Integer.valueOf(speed.getSelectedItem());
+		public void run() {
+
+
+			while(true) {
+				if(!workingQueue.isEmpty()) {
+					
+					int remainingProcess = Integer.parseInt(processes.getSelectedItem())- workingQueue.getFront().getData().getBaseAddress()+1;
+					int baseAddress=workingQueue.getFront().getData().getBaseAddress();
+					
+					if(remainingProcess<5) {
+						
+					}else {
+//						processdtm.setValueAt("Ready", baseAddress+2, 3);
+//						processdtm.setValueAt("Ready", baseAddress+1, 4);
+//						processdtm.setValueAt("Ready", baseAddress+2, 4);
+//						processdtm.setValueAt("Ready", baseAddress+3, 4);
+//						processdtm.setValueAt("Ready", baseAddress+4, 4);
+					}
+
+				}
+//				if(!Core1isRunning) { 
+//					Core1("RR",workingQueue.Dequeue(workingQueue)); 
+//				}
+//				else if(!Core2isRunning) { 
+//					Core2(workingQueue.Dequeue(workingQueue)); 
+//				}else if(!Core3isRunning) { 
+//					Core3(workingQueue.Dequeue(workingQueue)); 
+//				}else if(!Core4isRunning) { 
+//					Core4(workingQueue.Dequeue(workingQueue)); 
+//				}else if(!Core5isRunning) { 
+//					Core5(workingQueue.Dequeue(workingQueue)); 
+//					
+//				}
+				
+				
+//				workingQueue.Dequeue(workingQueue);
+//
+//
+//				if(RunningState(workingQueue.getFront())) {
+//					
+//					
+//					
+//
+					
+//
+//				}
+//				else {
+//
+					
+//
+//
+//				}  
+				
+				
+				
+//				if(batchQueue.getFront()!=null){
+//					Node workingProcess=batchQueue.Dequeue();
+//					ready1.setText(ready2.getText());
+//					ready2.setText(ready3.getText());
+//					ready3.setText(ready4.getText());
+//					ready4.setText(ready5.getText());
+//					ready5.setText(String.valueOf(workingProcess.getData().getProcessID()));
+//
+//				}  else{
+//					ready1.setText(ready2.getText());
+//					ready2.setText(ready3.getText());
+//					ready3.setText(ready4.getText());
+//					ready4.setText(ready5.getText());
+//					ready5.setText("");	
+//
+//				}
+
+				try {  
+
+					Thread.sleep(simulatorSpeed);
+
+
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+
+
+
+			}
+
+
+
+		}
+
+
+	};
+
+
+	setReadyQueue.start();
+
+
+}
+
+public boolean RunningState(Node runningProcess) {
+	
+	
+
+	boolean available=true;
+	
+			if(currentProcess1.getText().isEmpty()||
+			currentProcess2.getText().isEmpty()||
+			currentProcess3.getText().isEmpty()||
+			currentProcess4.getText().isEmpty()||
+			currentProcess5.getText().isEmpty()) {
+				 
+//				System.out.println("Has Space");
+			}else {
+//				System.out.println("FULL");
+			return available=false;
+			
+			
+			}
+			
+
+			
+//	if(currentProcess1.getText().isEmpty())
+//		currentProcess1.setText(ready1.getText());
+//	else if(currentProcess2.getText().isEmpty())
+//		currentProcess2.setText(ready1.getText());
+//	else if(currentProcess3.getText().isEmpty())
+//		currentProcess3.setText(ready1.getText());
+//	else if(currentProcess4.getText().isEmpty())
+//		currentProcess4.setText(ready1.getText());
+//	else if(currentProcess5.getText().isEmpty())
+//		currentProcess5.setText(ready1.getText());
+
+
+
+
+	return available;
+}
+
+
+Thread cpuCore1;
+Thread cpuCore2;
+Thread cpuCore3;
+Thread cpuCore4;
+Thread cpuCore5;
+
+boolean Core1isRunning=false;
+boolean Core2isRunning=false;
+boolean Core3isRunning=false;
+boolean Core4isRunning=false;
+boolean Core5isRunning=false;
+
+//LOGICAL RPOCESSORS/////////////////////////////////////
+
+
+
+public void Core1(Node RunningTask ){
+ 
+
+	cpuCore1 = new Thread() {
+	
+		
+		public void run() {
+			
+			String processID = String.valueOf(RunningTask.getData().getProcessID());  
+			int baseAddress = RunningTask.getData().getBaseAddress();
+			int serviceTime=RunningTask.getData().getServiceTime();
+			String startTime= new Process().TimeNow(); 
+			int attempt = RunningTask.getData().getAttempts()+1;
+			int sleepTime = RunningTask.getData().getSleepTime();
+			boolean finish = RunningTask.getData().isFinish(); 
+			int timeSlice=0;
+			int code=getCode(RunningTask.getData().getTask());
+			
+			
+			processdtm.setValueAt("Running", baseAddress-1, 4);
+			processdtm.setValueAt(startTime, baseAddress-1, 3);
+			RunningTask.getData().setStartTime(startTime);
+			
+			RunningTask.getData().setAttempts(attempt);
+		
+			while(true) {
+				
+				serviceTime=serviceTime-1; 
+					
+					if(!finish) {  
+						currentProcess1.setText(processID);
+						
+						
+						if(serviceTime<=0 ) {
+							finish=true;
+							RunningTask.getData().setFinish(finish);
+							processdtm.setValueAt(new Process().TimeNow(), baseAddress-1, 4);//Set Finsh TIme
+							processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1)); //Decrement Processes running
+							RunningTask.getData().setEndTime(new Process().TimeNow());
+							processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+0 ,baseAddress-1 , 7);
+							setAlgorithm("RR", baseAddress);
+							list.systemCall(code, RunningTask.getData(), "RR");
+							
+							currentProcess1.setText("");  
+
+						}
+						else {
+							
+							timeSlice++;
+							
+							processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+serviceTime ,baseAddress-1 , 7);
+//							workingQueue.Display();
+							if(timeSlice==quantum.getSelectedIndex() ) {
+								
+
+								
+								setAlgorithm("RR", baseAddress);
+								
+								if(serviceTime>0) {
+									processdtm.setValueAt("Preempted", baseAddress-1, 4);
+									workingQueue.Enqueue(RunningTask.getData());
+									
+								}else {
+									
+									
+									finish=true;
+									RunningTask.getData().setFinish(finish);
+									processdtm.setValueAt(new Process().TimeNow(), baseAddress-1, 4);//Set Finsh TIme
+									processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1)); //Decrement Processes running
+									RunningTask.getData().setEndTime(new Process().TimeNow());
+									processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+0 ,baseAddress-1 , 7);
+									list.systemCall(code, RunningTask.getData(), "RR");
+
+									setAlgorithm("RR", baseAddress);
+									
+								}
+								
+								currentProcess1.setText("");
+								RunningTask.getData().setServiceTime(serviceTime); 
+								cpuCore1.suspend(); 
+
+							}
+						
+						}
+						processdtm.setValueAt(attempt ,baseAddress-1 , 5);
+						
+						
+
+ 
+					}
+						
+					
+				
+				
+				try { 
+					Thread.sleep(simulatorSpeed);
+				}catch (InterruptedException e) { 
+					e.printStackTrace();
+				}
+				
+				
+				}
+	
+			
+			
+			}
+		
+
+		
+		
+	};
+
+
+	cpuCore1.start();
+
+
+	 
+
+}
+
+protected void priorityCheck(int code, int positon) {
+	Thread coreThread[] = {cpuCore1, cpuCore2, cpuCore3, cpuCore4, cpuCore5};
+	JLabel processLabel[]= {currentProcess1, currentProcess2, currentProcess3, currentProcess4, currentProcess5};
+	
+	if(code==1 || code==2 || code==3) {
+		for(int i=0; i<5; i++) {
+			if(i!=positon) {
+				coreThread[i].suspend();
+				processLabel[i].setText("");
+			}
+			
+		}
+	}else {
+		for(int i=0; i<5; i++) {
+				coreThread[i].resume();; 
+			}
+	}
+	
+}
+
+protected void setAlgorithm(String type, int baseAddress) {
+	
+	if(processdtm.getValueAt(baseAddress-1, 8)==null)
+		processdtm.setValueAt(type, baseAddress-1 , 8);
+	else
+		processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 8)+"->"+type, baseAddress-1 , 8);
+	
+}
+
+protected int getCode(String task) {
+	
+	if(task.equals("Adding a new record to the list"))
+		return 1;
+	else if(task.equals("Removing a record from the list"))
+		return 2;
+	else if(task.equals("Sort the records in ascending order"))
+		return 3;
+	else if(task.equals("Retrieve a record from the list"))
+		return 4;
+	else if(task.equals("Calculate the total of all integer"))
+		return 5;
+	
+	return 0;
+}
+
+public void Core2(Node RunningTask ){
+	 
+
+	cpuCore2 = new Thread() {
+		public void run() {
+			String processID = String.valueOf(RunningTask.getData().getProcessID());  
+			int baseAddress = RunningTask.getData().getBaseAddress();
+			int serviceTime=RunningTask.getData().getServiceTime();
+			String startTime= new Process().TimeNow(); 
+			int attempt = RunningTask.getData().getAttempts()+1;
+			int sleepTime = RunningTask.getData().getSleepTime();
+			boolean finish = RunningTask.getData().isFinish(); 
+			int timeSlice=0;
+			
+			int code=getCode(RunningTask.getData().getTask());
+			processdtm.setValueAt(startTime, baseAddress-1, 3);
+			RunningTask.getData().setStartTime(startTime);
+
+			processdtm.setValueAt("Running", baseAddress-1, 4);
+			RunningTask.getData().setAttempts(attempt);
+ 
+		
+		
+			while(true) {
+		 
+			
+				if (!finish) {
+					currentProcess2.setText(processID);
+					serviceTime=serviceTime-1;
+					
+					if(serviceTime==0) {
+						
+						processdtm.setValueAt(attempt ,baseAddress-1 , 5);
+
+						finish=true;
+						RunningTask.getData().setFinish(finish);
+						processdtm.setValueAt(new Process().TimeNow(), baseAddress-1, 4);//Set Finsh TIme
+						processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1)); //Decrement Processes running
+						RunningTask.getData().setEndTime(new Process().TimeNow());
+//						processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+0 ,baseAddress-1 , 7);
+						setAlgorithm("FCFS", baseAddress);
+						list.systemCall(code, RunningTask.getData(), "FCFS");
+						
+						
+	 
+						currentProcess2.setText("");  
+
+//						RunningTask.getData().setFinish(true);
+//						workingQueue.getFront().getData().setFinish(true);
+//						processdtm.setValueAt(new Process().TimeNow(), workingQueue.getFront().getData().getBaseAddress()-1, 4);
+//						processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1));
+//
+//						if(!workingQueue.isEmpty()) 
+//							workingQueue.Dequeue(workingQueue);
+//
+//						currentProcess1.setText(ready1.getText());
+
+//						if(!batchQueue.isEmpty()){
+//							Node workingProcess=batchQueue.Dequeue(batchQueue);
+//							ready1.setText(ready2.getText());
+//							ready2.setText(ready3.getText());
+//							ready3.setText(ready4.getText());
+//							ready4.setText(ready5.getText());
+//							ready5.setText(String.valueOf(workingProcess.getData().getProcessID()));
+//
+//
+//						}  else{
+//							ready1.setText(ready2.getText());
+//							ready2.setText(ready3.getText());
+//							ready3.setText(ready4.getText());
+//							ready4.setText(ready5.getText());
+//							ready5.setText("");	
+//
+//						}
+					}
+
+
+//					if(!workingQueue.isEmpty()){
+						RunningTask.getData().setServiceTime(serviceTime);
+//						workingQueue.getFront().getData().setServiceTime(workingQueue.getFront().getData().getServiceTime()-1);
+						processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+serviceTime ,baseAddress-1 , 7);
+
+//					}else  {
+//						btnStart.setEnabled(true);
+//						btnStop.setEnabled(false);
+////						JOptionPane.showMessageDialog(null, "Simulation Completed");
+//						FCFS.stop();
+//					}
+				}
+				
+				try { 
+					Thread.sleep(simulatorSpeed);
+				}catch (InterruptedException e) { 
+					e.printStackTrace();
+				}
+				
+			}
+		}
+	
+	};
+
+
+	cpuCore2.start();
+
+
+	 
+
+}
+
+public void Core3(Node RunningTask){
+	 
+
+	cpuCore3 = new Thread() {
+		public void run() {
+			
+			String processID = String.valueOf(RunningTask.getData().getProcessID());  
+			int baseAddress = RunningTask.getData().getBaseAddress();
+			int serviceTime=RunningTask.getData().getServiceTime();
+			String startTime= new Process().TimeNow(); 
+			int attempt = RunningTask.getData().getAttempts()+1;
+			int sleepTime = RunningTask.getData().getSleepTime();
+			boolean finish = RunningTask.getData().isFinish(); 
+			int timeSlice=0;
+			int code=getCode(RunningTask.getData().getTask());
+			processdtm.setValueAt(startTime, baseAddress-1, 3);
+			RunningTask.getData().setStartTime(startTime);
+			
+			processdtm.setValueAt("Running", baseAddress-1, 4);
+			RunningTask.getData().setAttempts(attempt);
+		
+			while(true) {
+				
+				serviceTime=serviceTime-1; 
+					
+					if(!finish) {  
+						currentProcess3.setText(processID);
+						
+						
+						if(serviceTime<=0 ) {
+							finish=true;
+							RunningTask.getData().setFinish(finish);
+							processdtm.setValueAt(new Process().TimeNow(), baseAddress-1, 4);//Set Finsh TIme
+							processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1)); //Decrement Processes running
+							RunningTask.getData().setEndTime(new Process().TimeNow());
+							processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+0 ,baseAddress-1 , 7);
+							setAlgorithm("RR", baseAddress);
+							list.systemCall(code, RunningTask.getData(), "RR");
+							
+							currentProcess3.setText("");  
+
+						}
+						else {
+							
+							timeSlice++;
+							
+							processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+serviceTime ,baseAddress-1 , 7);
+//							workingQueue.Display();
+							if(timeSlice==quantum.getSelectedIndex() ) {
+								
+
+								
+								setAlgorithm("RR", baseAddress);
+								
+								if(serviceTime>0) {
+									processdtm.setValueAt("Preempted", baseAddress-1, 4);
+									workingQueue.Enqueue(RunningTask.getData());
+									
+								}else {
+									
+									
+									finish=true;
+									RunningTask.getData().setFinish(finish);
+									processdtm.setValueAt(new Process().TimeNow(), baseAddress-1, 4);//Set Finsh TIme
+									processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1)); //Decrement Processes running
+									RunningTask.getData().setEndTime(new Process().TimeNow());
+									processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+0 ,baseAddress-1 , 7);
+									list.systemCall(code, RunningTask.getData(), "RR");
+
+									setAlgorithm("RR", baseAddress);
+									
+								}
+								
+								currentProcess3.setText("");
+								RunningTask.getData().setServiceTime(serviceTime); 
+								cpuCore3.suspend(); 
+
+							}
+						
+						}
+						processdtm.setValueAt(attempt ,baseAddress-1 , 5);
+						
+						
+
+ 
+					}
+						
+					
+				
+				
+				try { 
+					Thread.sleep(simulatorSpeed);
+				}catch (InterruptedException e) { 
+					e.printStackTrace();
+				}
+				
+				
+				}
+	
+			
+			
+			}
+	
+	};
+
+
+	cpuCore3.start();
+
+
+	 
+
+}
+
+public void Core4(Node RunningTask){
+	 
+
+	cpuCore4 = new Thread() {
+
+		public void run() {
+			String processID = String.valueOf(RunningTask.getData().getProcessID());  
+			int baseAddress = RunningTask.getData().getBaseAddress();
+			int serviceTime=RunningTask.getData().getServiceTime();
+			String startTime= new Process().TimeNow(); 
+			int attempt = RunningTask.getData().getAttempts()+1;
+			int sleepTime = RunningTask.getData().getSleepTime();
+			boolean finish = RunningTask.getData().isFinish(); 
+			int timeSlice=0;
+			int code=getCode(RunningTask.getData().getTask());
+			processdtm.setValueAt(startTime, baseAddress-1, 3);
+			RunningTask.getData().setStartTime(startTime);
+
+			processdtm.setValueAt("Running", baseAddress-1, 4);
+			RunningTask.getData().setAttempts(attempt);
+			
+			while(true) {
+				if (!finish) {
+					currentProcess4.setText(processID);
+					serviceTime=serviceTime-1;
+					
+					if(serviceTime==0) {
+						
+						
+
+						processdtm.setValueAt(attempt ,baseAddress-1 , 5);
+						finish=true;
+						RunningTask.getData().setFinish(finish);
+						processdtm.setValueAt(new Process().TimeNow(), baseAddress-1, 4);//Set Finsh TIme
+						processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1)); //Decrement Processes running
+						RunningTask.getData().setEndTime(new Process().TimeNow());
+//						processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+0 ,baseAddress-1 , 7);
+						setAlgorithm("FCFS", baseAddress);
+						list.systemCall(code, RunningTask.getData(), "FCFS");
+						
+						currentProcess4.setText("");  
+
+					 
+					}
+ 
+						RunningTask.getData().setServiceTime(serviceTime); 
+						processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+serviceTime ,baseAddress-1 , 7);
+ 
+				}
+				
+				try { 
+					Thread.sleep(simulatorSpeed);
+				}catch (InterruptedException e) { 
+					e.printStackTrace();
+				}
+				
+			}
+		}
+	
+	};
+
+
+	cpuCore4.start();
+
+
+	 
+
+}
+
+public void Core5(Node RunningTask){
+	 
+
+	cpuCore5 = new Thread() {
+		public void run() {
+			
+			String processID = String.valueOf(RunningTask.getData().getProcessID());  
+			int baseAddress = RunningTask.getData().getBaseAddress();
+			int serviceTime=RunningTask.getData().getServiceTime();
+			String startTime= new Process().TimeNow(); 
+			int attempt = RunningTask.getData().getAttempts()+1;
+			int sleepTime = RunningTask.getData().getSleepTime();
+			boolean finish = RunningTask.getData().isFinish(); 
+			int timeSlice=0;
+			int code=getCode(RunningTask.getData().getTask());
+			processdtm.setValueAt(startTime, baseAddress-1, 3);
+			RunningTask.getData().setStartTime(startTime);
+			
+			processdtm.setValueAt("Running", baseAddress-1, 4);
+			RunningTask.getData().setAttempts(attempt);
+		
+			while(true) {
+				
+				serviceTime=serviceTime-1; 
+					
+					if(!finish) {  
+						currentProcess5.setText(processID);
+						
+						
+						if(serviceTime<=0 ) {
+							finish=true;
+							RunningTask.getData().setFinish(finish);
+							processdtm.setValueAt(new Process().TimeNow(), baseAddress-1, 4);//Set Finsh TIme
+							processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1)); //Decrement Processes running
+							RunningTask.getData().setEndTime(new Process().TimeNow());
+							processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+0 ,baseAddress-1 , 7);
+							setAlgorithm("RR", baseAddress);
+							list.systemCall(code, RunningTask.getData(), "RR");
+							
+							currentProcess5.setText("");  
+
+						}
+						else {
+							
+							timeSlice++;
+							
+							processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+serviceTime ,baseAddress-1 , 7);
+//							workingQueue.Display();
+							if(timeSlice==quantum.getSelectedIndex() ) {
+								
+
+								
+								setAlgorithm("RR", baseAddress);
+								
+								if(serviceTime>0) {
+									processdtm.setValueAt("Preempted", baseAddress-1, 4);
+									workingQueue.Enqueue(RunningTask.getData());
+									
+								}else {
+									
+									
+									finish=true;
+									RunningTask.getData().setFinish(finish);
+									processdtm.setValueAt(new Process().TimeNow(), baseAddress-1, 4);//Set Finsh TIme
+									processes_lbl.setText(String.valueOf(Integer.valueOf(processes_lbl.getText())-1)); //Decrement Processes running
+									RunningTask.getData().setEndTime(new Process().TimeNow());
+									processdtm.setValueAt(processdtm.getValueAt(baseAddress-1, 7)+"->"+0 ,baseAddress-1 , 7);
+									list.systemCall(code, RunningTask.getData(), "RR");
+
+									setAlgorithm("RR", baseAddress);
+									
+								}
+								
+								currentProcess5.setText("");
+								RunningTask.getData().setServiceTime(serviceTime); 
+								cpuCore5.suspend(); 
+
+							}
+						
+						}
+						processdtm.setValueAt(attempt ,baseAddress-1 , 5);
+						
+						
+
+ 
+					}
+						
+					
+				
+				
+				try { 
+					Thread.sleep(simulatorSpeed);
+				}catch (InterruptedException e) { 
+					e.printStackTrace();
+				}
+				
+				
+				}
+	
+			
+			
+			}
+	
+	};
+
+
+	cpuCore5.start();
+
+
+	 
+
+}
+
+
+}

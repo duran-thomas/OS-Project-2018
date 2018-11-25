@@ -1,0 +1,66 @@
+OPERATING SYSTEM (CIT3002)
+Simulation Date       : 21/11/2018
+Simulation Start Time : 21:36pm
+
+		Integer Elements :
+				Key:10	Value:542
+				Key:9	Value:442
+				Key:8	Value:326
+				Key:7	Value:239
+				Key:6	Value:705
+				Key:5	Value:190
+				Key:4	Value:249
+				Key:3	Value:562
+				Key:2	Value:101
+				Key:1	Value:660
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PID		TASK		KEY      VALUE	     ATTEMPTS    START TIME	END TIME    SLEEP TIME	   Algorithm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+407	Added a New Record +	11        618		1	    1	       	4		 3	   FCFS
+176	Removed a Record   -	11        618		1	    5	       	9		 1	   FCFS
+131	Removed a Record   -	10        542		1	    10	       	14		 0	   FCFS
+199	Sorted The Records 				1	    15	       	16		 1	   FCFS
+				Key:2	Value:101
+				Key:5	Value:190
+				Key:7	Value:239
+				Key:4	Value:249
+				Key:8	Value:326
+				Key:9	Value:442
+				Key:3	Value:562
+				Key:1	Value:660
+				Key:6	Value:705
+6	Sorted The Records 				1	    17	       	18		 2	   FCFS
+				Key:2	Value:101
+				Key:5	Value:190
+				Key:7	Value:239
+				Key:4	Value:249
+				Key:8	Value:326
+				Key:9	Value:442
+				Key:3	Value:562
+				Key:1	Value:660
+				Key:6	Value:705
+498	Calculated the Total	Sum:     3474		1	    19	       	20		 1	   FCFS
+377	Calculated the Total	Sum:     3474		3	    18	       	21		 1	   RR
+168	Added a New Record +	3        822		1	    19	       	21		 3	   FCFS
+24	Sorted The Records 				4	    18	       	22		 1	   FCFS
+				Key:2	Value:101
+				Key:5	Value:190
+				Key:7	Value:239
+				Key:4	Value:249
+				Key:8	Value:326
+				Key:9	Value:442
+				Key:3	Value:562
+				Key:1	Value:660
+				Key:6	Value:705
+				Key:3	Value:822
+429	Sorted The Records 				4	    18	       	23		 0	   FCFS
+				Key:2	Value:101
+				Key:5	Value:190
+				Key:7	Value:239
+				Key:4	Value:249
+				Key:8	Value:326
+				Key:9	Value:442
+				Key:3	Value:562
+				Key:1	Value:660
+				Key:6	Value:705
+				Key:3	Value:822

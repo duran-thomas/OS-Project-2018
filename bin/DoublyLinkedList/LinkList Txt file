@@ -1,0 +1,437 @@
+package DoublyLinkedList;
+
+import java.io.BufferedWriter;
+import java.io.File; 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter; 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import javax.swing.JOptionPane; 
+
+
+public class DoublyLinkList {
+	private LinkNode head; 
+
+
+//	public DoublyLinkList(){
+//		
+//		
+//	}
+//	
+	
+	public void systemCall(int code,String pid, int attemps,String startTime,String endTime, String sleepTime  ) {
+		if(code==0)
+			this.Initialize(pid, attemps, startTime, endTime, sleepTime);
+		else if(code==1)
+			this.Insert(pid, attemps, startTime, endTime, sleepTime);
+		else if(code==2)
+			this.RemoveRandomElement(pid, attemps, startTime, endTime, sleepTime);
+		else if(code==3)
+			this.bubbleSort(pid, attemps, startTime, endTime, sleepTime);
+		else if(code==4)
+			this.RetrieveRandom(pid, attemps, startTime, endTime, sleepTime);
+		else if(code==5)
+			this.getTotal(pid, attemps, startTime, endTime, sleepTime);
+		
+		
+	}
+	public void Initialize(String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+		
+		this.head= new LinkNode(); 
+		this.addText(pid+"	Added a New Record +	"+head.getData().getKey()+"        "+head.getData().getValue()+
+				  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+	}
+
+
+
+	public void Insert(String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+		LinkNode temp= new LinkNode();
+ 
+		temp.getData().setKey(this.getHead().getData().getKey()+1);
+ 
+		temp.setNext(this.getHead()); 
+		temp.setPrev(null);  
+
+		if (head != null) 
+			this.getHead().setPrev(temp);   
+
+		this.setHead(temp); 
+		
+		this.addText(pid+"	Added a New Record +	"+temp.getData().getKey()+"        "+temp.getData().getValue()+
+				  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+		
+	}
+
+
+	public void Display() {
+		if(!isEmpty()) {
+			LinkNode temp=head;
+
+			while(temp!=null) {
+				System.out.println("\nKey   : "+ temp.getData().getKey());
+				System.out.println("Value : "+ temp.getData().getValue());
+				System.out.println("----------------------");
+				temp=temp.getNext();
+
+			}
+
+		}
+	}
+
+
+	public int getTotal(String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+		int total=0;
+		LinkNode temp=this.getHead();
+		if(!isEmpty()) {
+			
+
+			while (temp!= null) 
+			{ 
+				total+=temp.getData().getValue(); 
+				temp = temp.getNext(); 
+			} 
+
+		}
+
+		this.addText(pid+"	Calculated the Total	"+"Sum:"+"     "+total+
+				  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+		return total;
+	}
+
+	public int getCount() {
+		int count=0;
+		if(!isEmpty()) {
+			LinkNode temp=this.getHead();
+
+			while (temp!= null) 
+			{ 
+				count++; 
+				temp = temp.getNext(); 
+			} 
+			return count; 
+
+		}
+		return count;
+	}
+
+	public void bubbleSort(String pid, int attemps,String startTime,String endTime, String sleepTime )
+	{
+
+		LinkNode current, a, previous, position;
+		position = new LinkNode();
+		position.setNext(this.getHead());
+		head = position;
+
+		while (position.getNext() != null){
+			current = position.getNext();
+			previous = position;
+			a = current.getNext();
+			while(a != null)
+			{
+				if (a.getData().getValue() < current.getData().getValue())
+				{
+					LinkNode temp = a.getNext();
+					a.setNext(previous.getNext());
+					previous.setNext(current.getNext()); 
+					current.setNext(temp); 
+
+					previous = a;
+					a = temp;
+				}
+				else
+				{
+					a = a.getNext();
+					current = current.getNext();
+					previous = previous.getNext();
+				}
+
+			}	
+			position = position.getNext();
+		}
+		head = head.getNext();
+
+
+
+		this.addText(pid+"	Sorted The Records \t\t"+
+				  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+		this.AddEntireListToTheFIle();
+
+	}
+
+
+	private void AddEntireListToTheFIle() {
+		if(!isEmpty()) {
+			LinkNode temp=head;
+
+			while(temp!=null) {
+				this.addText("\t\t\t\tKey:"+temp.getData().getKey()+"\tValue:"+temp.getData().getValue());
+				temp=temp.getNext();
+
+			}
+
+		}	
+	}
+		public void RemoveRandomElement(String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+		LinkNode temp=this.getHead();
+		LinkNode storePrv=null;
+		LinkNode storeNxt=null;
+
+		int search=(int)(Math.random() * ((this.getCount()-1 - 1) + 1)) + 1;
+
+		if(!isEmpty()) {
+			temp=this.getHead();
+			
+			while (temp.getNext()!= null) 
+			{ 
+				if(temp.getData().getKey()==search) {
+				
+					storeNxt=temp.getNext();
+					storePrv=temp.getPrev();
+					
+					
+					 
+					storePrv.setNext(storeNxt);
+					storeNxt.setPrev(storePrv);
+					break;
+				}
+				temp = temp.getNext(); 
+			}
+			this.addText(pid+"	Removed a Record   -	"+search+"        "+temp.getData().getValue()+
+					  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+			temp=null;
+			
+		}
+		 
+	}
+
+
+
+
+	public String RetrieveRandom( String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+		String element="";
+		int search=(int)(Math.random() * ((this.getCount()-1	 - 1) + 1)) + 1;
+
+		if(!isEmpty()) {
+			LinkNode temp=this.getHead();
+			
+			while (temp!= null) 
+			{ 
+				if(temp.getData().getKey()==search) {
+					
+					this.addText(pid+"	Retrieved a Record	"+search+"        "+temp.getData().getValue()+
+							  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+					element="Key: "+String.valueOf(temp.getData().getKey())+" Value: "+String.valueOf(temp.getData().getValue());
+					break;
+				}
+				temp = temp.getNext(); 
+			} 
+			
+			
+		} 
+
+		return element;
+	}
+
+	public boolean isEmpty() { 
+		return head==null;
+	}
+
+	public void RemoveValue( String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+		if(!isEmpty()) {
+			this.addText(pid+"	Retrieved a Record	"+head.getData().getKey()+"        "+head.getData().getValue()+
+					  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+			LinkNode temp=head;
+			head=head.getNext();
+			head.setPrev(null);
+			temp=null;
+		}
+	}
+
+	public void addText(String execution) {
+
+		final File FileName = new File("Scheduling_Reports/report.txt");
+
+		try{
+			FileWriter fw = new FileWriter(FileName,true);
+
+			PrintWriter out = new PrintWriter(new BufferedWriter(fw));
+			out.println(execution);
+			out.flush(); 
+			out.close();
+
+			fw.close();
+			//	System.out.println(execution);	
+
+		}catch(IOException ioex){
+			JOptionPane.showMessageDialog(null,"Sorry File Does Not Exist Please Try Again","Message", JOptionPane.ERROR_MESSAGE);
+
+
+		}
+
+	}
+
+	public void RenameFile() {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("HH_mm_ss");
+
+
+		File oldFIle = new File("Scheduling_Reports/report.txt"); 
+		try {
+
+			oldFIle.renameTo(new File("Scheduling_Reports/report"+sdf.format(cal.getTime())+".txt"));
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+
+	}
+
+
+
+	public void CreateFile() {
+
+		
+		RenameFile();  
+
+		File fileName = null;
+		String path="Scheduling_Reports/report.txt"; 
+		try {
+			File dir= new File("Scheduling_Reports");
+			fileName= new File(path);
+
+			setDefaultStart(fileName);
+
+			dir.mkdir();
+			fileName.createNewFile();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
+	public void setDefaultStart(File FileName) {//Set Report's Header
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat dft = new SimpleDateFormat("dd/MM/yyyy");
+		String state="";
+
+		if(cal.getTime().getHours()>=12)
+			state="pm";
+		else
+			state="am";
+
+
+		try{
+			FileWriter fw = new FileWriter(FileName,true);
+			PrintWriter out = new PrintWriter(new BufferedWriter(fw));
+			out.println("OPERATING SYSTEM (CIT3002)");	
+			out.println("Simulation Date       : "+dft.format(cal.getTime()));	
+			out.println("Simulation Start Time : "+sdf.format(cal.getTime())+state);
+			out.println("");
+			out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			out.println("PID		TASK		KEY      VALUE	     ATTEMPTS    START TIME	END TIME    SLEEP TIME");
+			out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			out.flush();
+			out.close();
+
+			fw.close();
+
+		}catch(IOException ioex){
+			JOptionPane.showMessageDialog(null,"Sorry File Does Not Exist Please Try Again","Message", JOptionPane.ERROR_MESSAGE);
+
+
+		}
+
+	}
+
+
+	public LinkNode getHead() {
+		return head;
+	}
+
+	public void setHead(LinkNode head) {
+		this.head = head;
+	}
+
+
+
+}
+ 
+//public LinkNode RemoveSpecificElement(int key, String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+//	LinkNode temp=this.getHead();
+// 
+//
+//	while (temp!= null) 
+//	{ 
+//		if(temp.getData().getKey()==key) { 				
+//			this.addText(pid+"	Removed a Record	"+key+"        "+temp.getData().getValue()+
+//					  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+//			
+//			if(temp.getNext()==null) {
+//				temp=null;
+//			}else {
+//				temp.setNext(temp.getNext().getNext());
+//				break;
+//			}
+//		}
+//		temp = temp.getNext(); 
+//	}
+//	
+//	return temp; 
+//}
+
+//public String Retrieve(int search,  String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+//	String element=String.valueOf(search)+" was not found";
+//
+//	if(!isEmpty()) {
+//		LinkNode temp=this.getHead();
+//
+//		while (temp!= null) 
+//		{ 
+//			if(temp.getData().getKey()==search) {
+//				this.addText(pid+"	Retrieved a Record	"+search+"        "+temp.getData().getValue()+
+//						  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+//				
+//				element="Key: "+String.valueOf(temp.getData().getKey())+" Value: "+String.valueOf(temp.getData().getValue());
+//			
+//				break;
+//
+//			}
+//			temp = temp.getNext(); 
+//		} 
+//
+//	} 
+//
+//	return element;
+//}
+
+//public void InsertNode(LinkNode newNode, String pid, int attemps,String startTime,String endTime, String sleepTime ) {
+//	LinkNode temp= newNode;
+//	LinkNode temp2= head;
+//	boolean found=false;
+//
+//
+//	do {
+//		temp.getData().setKey(temp2.getData().getKey()+1);
+//		while(temp2.getNext()!=null){
+//			if(temp2.getData().getKey()==temp.getData().getKey())
+//				found=true;
+//			temp2=temp2.getNext();
+//		}
+//	}while(found);
+//
+//	temp.setNext(this.getHead()); 
+//	temp.setPrev(null);  
+//
+//	if (head != null) 
+//		this.getHead().setPrev(temp);   
+//
+//	this.setHead(temp); 
+//	this.addText(pid+"	Added a New Record +	"+temp.getData().getKey()+"        "+temp.getData().getValue()+
+//			  "		"+attemps+"	  "+startTime+"	"+endTime+"      "+sleepTime);
+//
+//
+//}
